@@ -3,7 +3,7 @@ import frappe
 from frappe.utils.pdf import get_pdf
 from frappe.utils.print_format import report_to_pdf as _orig_report_to_pdf
 
-TARGET_REPORTS = {"General Ledger"}  # Name as it appears in the report list
+TARGET_REPORTS = {"General Ledger"}
 
 def _parse_filters(filters):
     if not filters:
@@ -21,19 +21,27 @@ def _parse_filters(filters):
 @frappe.whitelist()
 def report_to_pdf(*args, **kwargs):
     """Override GL PDF generation."""
-    # Merge both styles of passing params (frappe.form_dict + kwargs)
     params = frappe._dict(frappe.form_dict or {})
     params.update(kwargs or {})
+
+    # Remove keys not accepted by original function
+    params.pop("cmd", None)
+    params.pop("data", None)  # sometimes appears in report calls
 
     report_name = params.get("report_name")
     filters = _parse_filters(params.get("filters"))
     orientation = params.get("orientation") or "Landscape"
 
     if report_name not in TARGET_REPORTS:
-        # Not GL → pass all original params along
-        return _orig_report_to_pdf(*args, **params)
+        # Not GL → pass only keys the original expects
+        return _orig_report_to_pdf(
+            report_name=report_name,
+            filters=filters,
+            orientation=orientation,
+            file_format=params.get("file_format"),
+        )
 
-    # Run the original GL query
+    # Run the original report data fetch
     result = frappe.get_attr("frappe.desk.query_report.run")(report_name, filters=filters)
     columns = result.get("columns") or []
     data    = result.get("result") or []
@@ -49,7 +57,7 @@ def report_to_pdf(*args, **kwargs):
         },
     )
 
-    # Return PDF to browser
+    # Return PDF
     frappe.local.response.filename = f"{frappe.scrub(report_name)}.pdf"
     frappe.local.response.filecontent = get_pdf(html, {"orientation": orientation})
     frappe.local.response.type = "download"
