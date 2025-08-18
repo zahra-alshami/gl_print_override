@@ -12,28 +12,28 @@
 </head>
 <body>
 <h1> CUSTOMIZED REPORT</h1>
-    <h1>{{ __("STATEMENT OF ACCOUNTS") }}</h1>
+    <h1>{{ _("STATEMENT OF ACCOUNTS") }}</h1>
 
     {% if filters.party_name %}
         <p><strong>{{ filters.party_name }}</strong></p>
     {% endif %}
 
     {% if filters.company %}
-        <p>{{ __("Company") }}: {{ filters.company }}</p>
+        <p>{{ _("Company") }}: {{ filters.company }}</p>
     {% endif %}
 
     {% if filters.from_date and filters.to_date %}
-        <p>{{ __("Period") }}: {{ filters.from_date }} - {{ filters.to_date }}</p>
+        <p>{{ _("Period") }}: {{ filters.from_date }} - {{ filters.to_date }}</p>
     {% endif %}
 
     <table>
         <thead>
             <tr>
-                <th>{{ __("Date") }}</th>
-                <th>{{ __("Account") }}</th>
-                <th>{{ __("Debit") }}</th>
-                <th>{{ __("Credit") }}</th>
-                <th>{{ __("Balance") }}</th>
+                <th>{{ _("Date") }}</th>
+                <th>{{ _("Account") }}</th>
+                <th>{{ _("Debit") }}</th>
+                <th>{{ _("Credit") }}</th>
+                <th>{{ _("Balance") }}</th>
             </tr>
         </thead>
         <tbody>
