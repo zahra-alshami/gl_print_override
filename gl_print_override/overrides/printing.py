@@ -10,30 +10,35 @@ def report_to_pdf(*args, **kwargs):
     """
     clean_kwargs = dict(kwargs)
 
-    if clean_kwargs.get("report_name") == "General Ledger":
-        # Parse filters if present
-        filters = {}
-        if clean_kwargs.get("filters"):
+    # Extract "business" args (not needed by _orig_report_to_pdf)
+    report_name = clean_kwargs.pop("report_name", None)
+    filters = clean_kwargs.pop("filters", None)
+    doctype = clean_kwargs.pop("doctype", None)
+    name = clean_kwargs.pop("name", None)
+
+    if report_name == "General Ledger":
+        # Parse filters safely
+        if filters:
             try:
-                filters = (
-                    json.loads(clean_kwargs["filters"])
-                    if isinstance(clean_kwargs["filters"], str)
-                    else clean_kwargs["filters"]
-                )
+                filters = json.loads(filters) if isinstance(filters, str) else filters
             except Exception:
                 filters = {}
+        else:
+            filters = {}
 
-        # Build context for template
+        # Build context for Jinja
         context = {
-            **clean_kwargs,
-            "filters": filters,   # ✅ make sure filters is always available
-            "_": frappe._         # ✅ translation helper
+            "doctype": doctype,
+            "name": name,
+            "filters": filters,
+            "_": frappe._,
         }
 
+        # Render HTML using your custom template
         clean_kwargs["html"] = frappe.render_template(
             "gl_print_override/templates/print_formats/gl_custom.html",
             context
         )
 
-    # Always return the original PDF renderer
+    # Now only pass safe kwargs to original PDF renderer
     return _orig_report_to_pdf(*args, **clean_kwargs)
