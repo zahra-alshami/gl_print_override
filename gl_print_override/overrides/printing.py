@@ -11,7 +11,7 @@ def report_to_pdf(*args, **kwargs):
     clean_kwargs = dict(kwargs)
 
     if clean_kwargs.get("report_name") == "General Ledger":
-        # Parse filters safely
+        # Parse filters if present
         filters = {}
         if clean_kwargs.get("filters"):
             try:
@@ -23,10 +23,10 @@ def report_to_pdf(*args, **kwargs):
             except Exception:
                 filters = {}
 
-        # Build context for Jinja template
+        # Build context for template
         context = {
             **clean_kwargs,
-            "filters": filters,   # ✅ now template sees "filters"
+            "filters": filters,   # ✅ make sure filters is always available
             "_": frappe._         # ✅ translation helper
         }
 
@@ -35,5 +35,5 @@ def report_to_pdf(*args, **kwargs):
             context
         )
 
-    # Return PDF bytes (Frappe will handle Response)
+    # Always return the original PDF renderer
     return _orig_report_to_pdf(*args, **clean_kwargs)
