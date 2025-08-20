@@ -1,7 +1,7 @@
 import frappe
 from frappe.utils.print_format import report_to_pdf as _orig_report_to_pdf
 from frappe.utils.pdf import get_pdf
-
+@frappe.whitelist()
 def report_to_pdf(*args, **kwargs):
     report_name = kwargs.get("report_name")
     filters = kwargs.get("filters") or {}
