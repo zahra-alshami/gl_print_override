@@ -5,19 +5,6 @@ app_description = "override general ledger report print format "
 app_email = "info@asdamsoft.com"
 app_license = "mit"
 
-# Override default report_to_pdf
-override_whitelisted_methods = {
-    "frappe.utils.print_format.report_to_pdf": "gl_print_override.overrides.printing.report_to_pdf"
-}
-
-# Include JS for custom report table
-app_include_js = [
-    "/assets/gl_print_override/js/gl_custom_report.js"
-]
-
-# Apps
-# ------------------
-
 # required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
