@@ -17,15 +17,19 @@ app_license = "mit"
 # 		"has_permission": "gl_print_override.api.permission.has_app_permission"
 # 	}
 # ]
-
+doc_events = {
+    "*": {
+        "on_update": "gl_print_override.patches.report_pdf_patch.apply_patch"
+    }
+}
 # Includes in <head>
 # ------------------
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/gl_print_override/css/gl_print_override.css"
-app_include_js = [
-    "/assets/gl_print_override/js/general_ledger_override.js"
-]
+# app_include_js = [
+#     "/assets/gl_print_override/js/general_ledger_override.js"
+# ]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/gl_print_override/css/gl_print_override.css"
