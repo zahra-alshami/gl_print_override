@@ -1,18 +1,24 @@
-frappe.ui.form.on("GL Entry", {
-    refresh(frm) {
-        console.log("✅ GL Print Override JS loaded");
-        // Example: override print button
-        frm.page.set_primary_action("Custom Print", () => {
+frappe.query_reports["General Ledger"] = {
+    onload: function(report) {
+        console.log("✅ GL Print Override loaded");
+
+        report.page.add_inner_button("Custom PDF", function() {
             frappe.call({
-                method: "frappe.utils.print_format.report_to_pdf",
+                method: "frappe.desk.query_report.download",
                 args: {
-                    html: "<h1>Custom PDF Content</h1>",
-                    orientation: "Landscape"
+                    report_name: "General Ledger",
+                    file_format_type: "PDF",
+                    filters: report.get_values(),
+                    // 👇 force your custom print format
+                    print_format: "Custom GL Print"
                 },
                 callback: function(r) {
-                    frappe.utils.downloadify(r.message, "custom_gl.pdf", "application/pdf");
+                    if (!r.exc) {
+                        // auto-download is handled by frappe, but just in case
+                        frappe.msgprint("Downloaded with Custom Print Format!");
+                    }
                 }
             });
         });
     }
-});
+};
