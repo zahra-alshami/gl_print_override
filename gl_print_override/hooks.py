@@ -23,7 +23,9 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/gl_print_override/css/gl_print_override.css"
-# app_include_js = "/assets/gl_print_override/js/gl_print_override.js"
+app_include_js = [
+    "/assets/gl_print_override/js/general_ledger_override.js"
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/gl_print_override/css/gl_print_override.css"
