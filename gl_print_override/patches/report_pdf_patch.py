@@ -11,6 +11,6 @@ def custom_report_to_pdf(html, orientation="Landscape"):
 
     return original_report_to_pdf(html, orientation)
 
-def apply_patch():
+def apply_patch(*args, **kwargs):
     frappe.logger().info("llllllllll")
-    # frappe.utils.print_format.report_to_pdf = custom_report_to_pdf
+    frappe.utils.print_format.report_to_pdf = custom_report_to_pdf
