@@ -1,3 +1,5 @@
+__version__ = "0.0.1"
+
 # import frappe
 # import report_to_pdf
 # import overrides.printing
