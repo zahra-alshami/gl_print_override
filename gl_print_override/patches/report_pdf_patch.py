@@ -1,6 +1,7 @@
 import frappe
 from frappe.utils.print_format import report_to_pdf as original_report_to_pdf
 
+@frappe.whitelist()
 def report_to_pdf():
     frappe.logger().info("overriding general ledger")
 # def custom_report_to_pdf(html, orientation="Landscape"):
