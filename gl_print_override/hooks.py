@@ -17,11 +17,11 @@ app_license = "mit"
 # 		"has_permission": "gl_print_override.api.permission.has_app_permission"
 # 	}
 # ]
-doc_events = {
-    "*": {
-        "on_update": "gl_print_override.patches.report_pdf_patch.apply_patch"
-    }
-}
+# doc_events = {
+#     "*": {
+#         "on_update": "gl_print_override.patches.report_pdf_patch.apply_patch"
+#     }
+# }
 # Includes in <head>
 # ------------------
 
